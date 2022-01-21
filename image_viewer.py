@@ -1,7 +1,6 @@
 # Imports
 from tkinter import *
 from tkinter import filedialog
-from time import sleep
 from PIL import ImageTk, Image
 
 # Setting up the window
@@ -50,6 +49,14 @@ def resize_images():
         newImageWidth = currentImageWidth * newImageHeight / currentImageHeight
         imagesList[i] = imagesList[i].resize((int(newImageWidth), int(newImageHeight)))
         imagesPhotoList[i] = ImageTk.PhotoImage(imagesList[i])
+
+# def resize_current_image():
+#     global imagesList, imagesPhotoList, imageIndex
+#     currentImageWidth, currentImageHeight = imagesList[imageIndex].size
+#     newImageHeight = root.winfo_height() - 50
+#     newImageWidth = currentImageWidth * newImageHeight / currentImageHeight
+#     imagesList[imageIndex] = imagesList[imageIndex].resize((int(newImageWidth), int(newImageHeight)))
+#     imagesPhotoList[imageIndex] = ImageTk.PhotoImage(imagesList[imageIndex])
 
 
 # Creating the image viewer
@@ -125,6 +132,7 @@ def get_window_size():
 
 def on_resize():
     global imageShow, nameLabel, buttonPrevious, buttonNext, windowWidth, windowHeight
+    global imagesPhotoList, imagesList, imagesNames, imageIndex
     if root.winfo_width() != windowWidth or root.winfo_height() != windowHeight:
         imageShow.grid_forget()
         if len(imagesList) != 0:
