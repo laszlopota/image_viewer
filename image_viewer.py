@@ -46,7 +46,7 @@ def resize_images():
     global imagesList, imagesPhotoList
     for i in range(len(imagesList)):
         currentImageWidth, currentImageHeight = imagesList[i].size
-        newImageHeight = imageShow.winfo_height()
+        newImageHeight = root.winfo_height() - 50
         newImageWidth = currentImageWidth * newImageHeight / currentImageHeight
         imagesList[i] = imagesList[i].resize((int(newImageWidth), int(newImageHeight)))
         imagesPhotoList[i] = ImageTk.PhotoImage(imagesList[i])
@@ -118,7 +118,7 @@ root.bind('<Left>', lambda event: previous_image())
 
 windowWidth = root.winfo_width()
 windowHeight = root.winfo_height()
-def get_window_size(event):
+def get_window_size():
     global windowWidth, windowHeight
     windowWidth = root.winfo_width()
     windowHeight = root.winfo_height()
@@ -128,6 +128,7 @@ def on_resize():
     if root.winfo_width() != windowWidth or root.winfo_height() != windowHeight:
         imageShow.grid_forget()
         if len(imagesList) != 0:
+            resize_images()
             imageShow = Label(
                 root, image=imagesPhotoList[imageIndex], background='white', width=root.winfo_width(),
                 height=root.winfo_height() - 50, border=0
@@ -154,7 +155,7 @@ def on_resize():
         buttonNext.grid(row=1, column=2)
 
 
-root.bind('<Motion>', lambda event: get_window_size(event))
+root.bind('<Motion>', lambda event: get_window_size())
 root.bind('<Configure>', lambda event: on_resize())
 
 # Running the application
