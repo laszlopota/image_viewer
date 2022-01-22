@@ -20,6 +20,10 @@ imagesList = []
 imagesPhotoList = []
 def open_images():
     global imagesPath, imagesNames, imagesList, imagesPhotoList
+    imagesPath = []
+    imagesNames = []
+    imagesList = []
+    imagesPhotoList = []
 
     file_path = filedialog.askopenfilenames()
     for image in file_path:
@@ -49,14 +53,6 @@ def resize_images():
         newImageWidth = currentImageWidth * newImageHeight / currentImageHeight
         imagesList[i] = imagesList[i].resize((int(newImageWidth), int(newImageHeight)))
         imagesPhotoList[i] = ImageTk.PhotoImage(imagesList[i])
-
-# def resize_current_image():
-#     global imagesList, imagesPhotoList, imageIndex
-#     currentImageWidth, currentImageHeight = imagesList[imageIndex].size
-#     newImageHeight = root.winfo_height() - 50
-#     newImageWidth = currentImageWidth * newImageHeight / currentImageHeight
-#     imagesList[imageIndex] = imagesList[imageIndex].resize((int(newImageWidth), int(newImageHeight)))
-#     imagesPhotoList[imageIndex] = ImageTk.PhotoImage(imagesList[imageIndex])
 
 
 # Creating the image viewer
@@ -123,48 +119,31 @@ root.bind('<Right>', lambda event: next_image())
 root.bind('<Down>', lambda event: previous_image())
 root.bind('<Left>', lambda event: previous_image())
 
-windowWidth = root.winfo_width()
-windowHeight = root.winfo_height()
-def get_window_size():
-    global windowWidth, windowHeight
-    windowWidth = root.winfo_width()
-    windowHeight = root.winfo_height()
-
 def on_resize():
-    global imageShow, nameLabel, buttonPrevious, buttonNext, windowWidth, windowHeight
+    global imageShow, nameLabel, buttonPrevious, buttonNext
     global imagesPhotoList, imagesList, imagesNames, imageIndex
-    if root.winfo_width() != windowWidth or root.winfo_height() != windowHeight:
-        imageShow.grid_forget()
-        if len(imagesList) != 0:
-            resize_images()
-            imageShow = Label(
-                root, image=imagesPhotoList[imageIndex], background='white', width=root.winfo_width(),
-                height=root.winfo_height() - 50, border=0
-            )
-            nameLabel['text'] = imagesNames[imageIndex]
-        else:
-            imageShow = Label(
-                root, image=plusImage, background='white', width=root.winfo_width(), height=root.winfo_height() - 50,
-                border=0
-            )
-            imageShow.bind('<Button-1>', lambda event: open_images())
-            nameLabel['text'] = 'Select images!'
-        imageShow.grid(row=0, column=0, columnspan=3)
-        nameLabel.grid(row=1, column=1)
-
-        buttonPrevious = Button(
-            root, text='<<', border=0, width=20, height=2, background='white', command=previous_image
+    imageShow.grid_forget()
+    if len(imagesList) != 0:
+        resize_images()
+        imageShow = Label(
+            root, image=imagesPhotoList[imageIndex], background='white', width=root.winfo_width(),
+            height=root.winfo_height() - 50, border=0
         )
-        buttonPrevious.grid(row=1, column=0)
-
-        buttonNext = Button(
-            root, text='>>', border=0, width=20, height=2, background='white', command=next_image
+        nameLabel['text'] = imagesNames[imageIndex]
+    else:
+        imageShow = Label(
+            root, image=plusImage, background='white', width=root.winfo_width(), height=root.winfo_height() - 50,
+            border=0
         )
-        buttonNext.grid(row=1, column=2)
+        imageShow.bind('<Button-1>', lambda event: open_images())
+        nameLabel['text'] = 'Select images!'
+    imageShow.grid(row=0, column=0, columnspan=3)
+    nameLabel.grid(row=1, column=1)
+    buttonPrevious.grid(row=1, column=0)
+    buttonNext.grid(row=1, column=2)
 
 
-root.bind('<Motion>', lambda event: get_window_size())
-root.bind('<Configure>', lambda event: on_resize())
+root.bind('<Motion>', lambda event: on_resize())
 
 # Running the application
 mainloop()
